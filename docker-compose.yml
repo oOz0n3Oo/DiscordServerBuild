@@ -1,0 +1,26 @@
+services:
+  bot:
+    build: ./bot
+    container_name: discord-bot
+    restart: unless-stopped
+    volumes:
+      - ./config:/app/config
+    networks:
+      - discord-net
+    environment:
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN:-}
+
+  portal:
+    build: ./portal
+    container_name: discord-portal
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./config:/app/config
+    networks:
+      - discord-net
+
+networks:
+  discord-net:
+    driver: bridge

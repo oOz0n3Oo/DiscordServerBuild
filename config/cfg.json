@@ -1,0 +1,133 @@
+{
+  "api": {
+    "url": "",
+    "token": ""
+  },
+  "roles": {
+    "Founder": "#FF1744",
+    "Core Team": "#2196F3",
+    "Moderator": "#FF9800",
+    "Contributor": "#4CAF50",
+    "Community": "#9C27B0"
+  },
+  "chans": {
+    "「 PUBLIC 」": [
+      "📢・announcements",
+      "👋・welcome",
+      "📜・rules",
+      "💬・general-chat"
+    ],
+    "「 COMMUNITY 」": [
+      "🎯・introductions",
+      "🎲・off-topic",
+      "🎨・showcase",
+      "📚・resources"
+    ],
+    "「 HELP 」": [
+      "🔧・troubleshooting",
+      "🐛・bug-reports",
+      "💡・feature-requests",
+      "❓・faq"
+    ],
+    "「 CORE TEAM 」": [
+      "📋・project-info",
+      "🗺️・roadmap",
+      "📅・planning",
+      "🚀・releases"
+    ],
+    "「 DEVELOPMENT 」": [
+      "🔗・github-updates",
+      "📝・pull-requests",
+      "👀・code-review",
+      "🏗️・architecture"
+    ],
+    "「 DOCUMENTATION 」": [
+      "📖・docs",
+      "🎓・tutorials",
+      "⚡・setup-guide",
+      "📡・api-reference"
+    ],
+    "「 MODERATORS 」": [
+      "⚖️・mod-actions",
+      "📋・mod-reports",
+      "⚠️・warnings-log",
+      "📝・internal-notes"
+    ],
+    "「 ADMIN 」": [
+      "🤖・bot-logs",
+      "⚙️・admin-commands",
+      "📋・audit-log",
+      "🔐・security"
+    ],
+    "「 VOICE 」": [
+      "🎙️・general-voice",
+      "📞・dev-standup",
+      "👥・team-meeting"
+    ]
+  },
+  "perms": {
+    "「 PUBLIC 」": {
+      "Founder": {"view": true, "send": true},
+      "Core Team": {"view": true, "send": true},
+      "Moderator": {"view": true, "send": true},
+      "Contributor": {"view": true, "send": true},
+      "Community": {"view": true, "send": true}
+    },
+    "「 COMMUNITY 」": {
+      "Founder": {"view": true, "send": true},
+      "Core Team": {"view": true, "send": true},
+      "Moderator": {"view": true, "send": true},
+      "Contributor": {"view": true, "send": true},
+      "Community": {"view": true, "send": true}
+    },
+    "「 HELP 」": {
+      "Founder": {"view": true, "send": true},
+      "Core Team": {"view": true, "send": true},
+      "Moderator": {"view": true, "send": true},
+      "Contributor": {"view": true, "send": true},
+      "Community": {"view": true, "send": true}
+    },
+    "「 CORE TEAM 」": {
+      "Founder": {"view": true, "send": true},
+      "Core Team": {"view": true, "send": true},
+      "Moderator": {"view": false, "send": false},
+      "Contributor": {"view": false, "send": false},
+      "Community": {"view": false, "send": false}
+    },
+    "「 DEVELOPMENT 」": {
+      "Founder": {"view": true, "send": true},
+      "Core Team": {"view": true, "send": true},
+      "Moderator": {"view": true, "send": false},
+      "Contributor": {"view": true, "send": true},
+      "Community": {"view": false, "send": false}
+    },
+    "「 DOCUMENTATION 」": {
+      "Founder": {"view": true, "send": true},
+      "Core Team": {"view": true, "send": true},
+      "Moderator": {"view": true, "send": false},
+      "Contributor": {"view": true, "send": true},
+      "Community": {"view": true, "send": false}
+    },
+    "「 MODERATORS 」": {
+      "Founder": {"view": true, "send": true},
+      "Core Team": {"view": true, "send": true},
+      "Moderator": {"view": true, "send": true},
+      "Contributor": {"view": false, "send": false},
+      "Community": {"view": false, "send": false}
+    },
+    "「 ADMIN 」": {
+      "Founder": {"view": true, "send": true},
+      "Core Team": {"view": true, "send": true},
+      "Moderator": {"view": false, "send": false},
+      "Contributor": {"view": false, "send": false},
+      "Community": {"view": false, "send": false}
+    },
+    "「 VOICE 」": {
+      "Founder": {"view": true, "send": true},
+      "Core Team": {"view": true, "send": true},
+      "Moderator": {"view": true, "send": true},
+      "Contributor": {"view": true, "send": true},
+      "Community": {"view": true, "send": true}
+    }
+  }
+}
