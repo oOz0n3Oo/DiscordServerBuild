@@ -1,31 +1,34 @@
-# Discord Server Builder Discord Companion Bot
+# Discord Server Builder
 
-Automated Discord server builder & manager for Discord Server Builder CTF platform.
+Automated Discord server structure builder with admin portal. Creates roles, channels, categories, permissions, and styled welcome messages with a single command.
 
 ## Features
-- Auto-provisions Discord server structure (roles, channels, permissions)
-- Admin portal for config management (create/delete/rename channels, roles, webhooks)
-- JSON-based config (import/export for easy migration)
-- Slash commands for admins
-- Webhook support for event notifications
+
+- **Auto-provisions** complete Discord server structure (roles, channels, categories, permissions)
+- **Styled channel names** with emojis (e.g., `📢・announcements`, `💬・general-chat`)
+- **Welcome messages** automatically posted and pinned to each channel
+- **Clean pins** - removes the "pinned a message" notification automatically
+- **Admin portal** for config management via web UI
+- **Nuke command** to wipe everything and start fresh
+- **JSON-based config** for easy backup/migration
 
 ## Quick Start
 
 ### Prerequisites
-- Discord Bot Token (get from https://discord.com/developers/applications)
-- Docker & Docker Compose (or Python 3.11+)
+
+- Discord Bot Token ([get one here](https://discord.com/developers/applications))
+- Docker & Docker Compose
 
 ### Setup
 
-1. **Extract the zip**
+1. **Clone the repo**
 ```bash
-unzip discord-server-builder-companion.zip
-cd discord-server-builder-companion
+git clone https://github.com/oOz0n3Oo/DiscordServerBuild.git
+cd DiscordServerBuild
 ```
 
-2. **Add your Discord token to .env**
+2. **Add your Discord token**
 ```bash
-# .env file already exists, just edit it:
 nano .env
 # Set: DISCORD_BOT_TOKEN=your_actual_token_here
 ```
@@ -35,121 +38,190 @@ nano .env
 docker compose up -d
 ```
 
-Portal: http://localhost:5000
-Bot: Runs in container (will wait for token if not provided)
+4. **Invite bot to your server** with these permissions:
+   - Administrator (recommended), OR:
+   - Manage Roles
+   - Manage Channels
+   - View Channels
+   - Send Messages
+   - Manage Messages
+   - Read Message History
 
-4. **Configure via Portal**
-- Go to http://localhost:5000
-- Set Discord Server Builder API URL & token (in Config tab)
-- Customize roles, channels, permissions
-- Click `/setup` in Discord to build the server
-- OR use portal commands to manage everything
+5. **Run `/setup` in Discord** to build the server
 
-5. **Local setup (no Docker)**
+## Slash Commands
 
-Bot (Terminal 1):
+| Command | Description |
+|---------|-------------|
+| `/setup` | Build server structure from config (roles, channels, permissions, messages) |
+| `/nuke` | Delete ALL channels, categories, and roles - complete clean slate |
+
+Both commands require Administrator permission.
+
+## Admin Portal
+
+Access at **http://localhost:5000**
+
+Default login: `admin` / `changeme`
+
+### Portal Features
+
+- **Config** - Edit API settings
+- **Messages** - Customize welcome messages per channel
+- **Channels** - Add/remove channels and categories
+- **Roles** - Add/remove roles with custom colors
+- **Permissions** - Set role permissions per category
+- **Webhooks** - Configure event webhooks
+- **Import/Export** - Backup and restore full configuration
+
+## File Structure
+
+```
+DiscordServerBuild/
+├── bot/
+│   ├── main.py           # Discord bot code
+│   ├── requirements.txt  # Python dependencies (py-cord)
+│   └── Dockerfile
+├── portal/
+│   ├── app.py            # Flask admin panel
+│   ├── requirements.txt  # Python dependencies (Flask)
+│   ├── Dockerfile
+│   └── templates/
+│       ├── index.html    # Admin dashboard
+│       └── login.html    # Login page
+├── config/
+│   ├── cfg.json          # Roles, channels, permissions config
+│   ├── messages.json     # Channel welcome messages
+│   ├── auth.json         # Portal authentication
+│   └── webhooks.json     # Webhook configurations
+├── docker-compose.yml
+├── .env                  # Discord bot token (create this)
+├── .env.example
+└── .gitignore
+```
+
+## Configuration
+
+### cfg.json
+
+Defines roles, channels, and permissions:
+
+```json
+{
+  "roles": {
+    "Founder": "#FF1744",
+    "Core Team": "#2196F3",
+    "Moderator": "#FF9800"
+  },
+  "chans": {
+    "「 PUBLIC 」": [
+      "📢・announcements",
+      "👋・welcome",
+      "📜・rules"
+    ],
+    "「 VOICE 」": [
+      "🎙️・general-voice"
+    ]
+  },
+  "perms": {
+    "「 PUBLIC 」": {
+      "Founder": {"view": true, "send": true},
+      "Moderator": {"view": true, "send": true}
+    }
+  }
+}
+```
+
+### messages.json
+
+Defines welcome messages for each channel:
+
+```json
+{
+  "messages": {
+    "📢・announcements": "📢 **ANNOUNCEMENTS**\nOfficial updates posted here.",
+    "👋・welcome": "👋 **Welcome!**\nRead the rules and have fun!"
+  }
+}
+```
+
+## Bot Permissions
+
+### Required Discord Permissions
+
+- **Manage Roles** - Create and assign roles
+- **Manage Channels** - Create categories and channels
+- **View Channels** - Access channels
+- **Send Messages** - Post welcome messages
+- **Manage Messages** - Pin messages and delete pin notifications
+- **Read Message History** - Check for existing messages
+
+### Required Intents
+
+Enable these in [Discord Developer Portal](https://discord.com/developers/applications) → Bot:
+
+- ✅ Server Members Intent
+- ✅ Message Content Intent
+
+## Troubleshooting
+
+### Bot won't start
+
+- Check `DISCORD_BOT_TOKEN` in `.env` file
+- Verify token is valid in Discord Developer Portal
+- Check logs: `docker compose logs bot`
+
+### "Could not get server info" error
+
+- Bot needs Administrator permission or the specific permissions listed above
+- Re-invite the bot with correct permissions
+- Make sure intents are enabled in Developer Portal
+
+### Slash commands not showing
+
+- Wait 1-2 minutes for Discord to sync commands
+- Try kicking and re-inviting the bot
+- Restart the bot: `docker compose restart bot`
+
+### Portal can't connect
+
+- Check both containers are running: `docker compose ps`
+- Verify port 5000 is not in use: `lsof -i :5000`
+- Check logs: `docker compose logs portal`
+
+### Channels/roles not created
+
+- Bot role must be higher than roles it's creating
+- Check bot has Manage Roles and Manage Channels permissions
+- Check logs for specific errors: `docker compose logs bot`
+
+### Pin notification not deleted
+
+- Bot needs Manage Messages permission
+- Check message history permission
+
+### Config changes not applying
+
+- Restart the bot after config changes: `docker compose restart bot`
+- Or run `/setup` again (it skips existing items)
+
+## Local Development (No Docker)
+
+**Bot:**
 ```bash
 cd bot
 pip install -r requirements.txt
+export DISCORD_BOT_TOKEN=your_token
 python main.py
 ```
 
-Portal (Terminal 2):
+**Portal:**
 ```bash
 cd portal
 pip install -r requirements.txt
 python app.py
 ```
 
-## Usage
-
-### Admin Portal
-- **Config**: Set CTF API URL & token
-- **Channels**: Add/delete/rename channels
-- **Roles**: Add/delete roles with colors
-- **Permissions**: Set role permissions per category
-- **Webhooks**: Add event webhooks (solves, first blood, etc.)
-- **Import/Export**: Backup & restore full configuration
-
-### Slash Commands (in Discord)
-- `/setup` - Build the server
-- `/rebuild` - Rebuild from scratch
-- `/sync` - Sync with CTF API
-- `/wh_add <trigger> <url>` - Add webhook
-- `/wh_list` - List webhooks
-- `/wh_del <id>` - Delete webhook
-
-## File Structure
-```
-discord-server-builder-companion/
-├── bot/                 - Discord bot (Python)
-│   ├── main.py
-│   ├── requirements.txt
-│   └── Dockerfile
-├── portal/              - Admin panel (Flask)
-│   ├── app.py
-│   ├── templates/
-│   │   └── index.html
-│   ├── requirements.txt
-│   └── Dockerfile
-├── config/              - Shared config & state
-│   ├── cfg.json         - Main config
-│   ├── webhooks.json    - Webhooks list
-│   └── state.json       - Last sync state
-├── docker-compose.yml
-├── .env.example
-└── README.md
-```
-
-## Configuration (cfg.json)
-
-```json
-{
-  "api": {
-    "url": "http://discord-server-builder:3000/api/v1",
-    "token": "YOUR_API_TOKEN"
-  },
-  "roles": {
-    "Organizer": "#DC143C",
-    "Player": "#1E90FF",
-    "Spectator": "#808080"
-  },
-  "chans": {
-    "GENERAL": ["announcements", "rules", "general-chat"],
-    "CHALLENGES": ["challenges", "hints-and-help"]
-  },
-  "perms": {
-    "GENERAL": {
-      "Organizer": {"view": true, "send": true},
-      "Player": {"view": true, "send": true}
-    }
-  }
-}
-```
-
-## API Endpoints (Bot)
-- `GET /health` - Health check
-- `GET /cfg` - Get current config
-
-## Notes
-- Bot requires full Discord admin permissions
-- Config is JSON-based for easy migration
-- All changes via portal are reflected in bot immediately
-- Webhooks fire on configurable events
-
-## Troubleshooting
-
-**Bot won't start**
-- Check DISCORD_BOT_TOKEN in .env
-- Verify token is valid in Discord Developer Portal
-
-**Portal can't reach bot**
-- Check docker-compose.yml networks
-- Ensure both containers running: `docker ps`
-
-**Config not syncing**
-- Verify config/ directory exists and is writable
-- Check file permissions
-
 ## License
+
 MIT
